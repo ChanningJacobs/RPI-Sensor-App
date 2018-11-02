@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 import pi_utils
+import datetime
 
 inch_threshold = 2
 
@@ -34,12 +35,15 @@ try:
 
 		if loop_settle > 0:
 			loop_settle -= 1
-		#print ("distance: %f" % distance)
-		#print
-
 		if loop_settle == 1:
 			default_distance = distance
-		if distance > default_distance + inch_threshold || distance < default_distance - inch_threshold:
-			write_measurement(distance, 'image_b64_string_default', time.time())
+		if loop_settle == 0:
+			if distance > default_distance + inch_threshold or distance < default_distance - inch_threshold:
+				pi_utils.write_measurement(str(distance), 'image_b64_string_default', datetime.datetime.now())
+				print "Writing to the DB."
+
+		print ("distance: %f" % distance)
+		print
+
 finally:
 	GPIO.cleanup()
