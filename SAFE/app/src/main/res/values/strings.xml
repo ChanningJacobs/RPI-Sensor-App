@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SAFE</string>
+    <string name="distance_label">distance: </string>
+    <string name="default_distance_measurement">no measurements</string>
+    <string name="time_label">timestamp: </string>
+    <string name="default_time_stamp">no timestamps</string>
+</resources>
