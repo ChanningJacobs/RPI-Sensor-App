@@ -5,4 +5,8 @@
     <string name="time_label">timestamp: </string>
     <string name="default_time_stamp">no timestamps</string>
     <string name="NightPicText">Database Picture</string>
+    <string name="default_email">email</string>
+    <string name="default_password">password</string>
+    <string name="sign_in">sign in</string>
+    <string name="register">register</string>
 </resources>
