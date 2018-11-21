@@ -3,4 +3,17 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="safe_red">#FF0000</color>
+    <color name="safe_orange">#FFA500</color>
+    <color name="safe_yellow">#FFFF00</color>
+    <color name="safe_green">#008000</color>
+    <color name="safe_blue">#0000FF</color>
+    <color name="safe_purple">#800080</color>
+    <color name="safe_pink">#FFC0CB</color>
+    <color name="safe_aqua">#00aba9</color>
+    <color name="safe_tan">#D2B48C</color>
+    <color name="safe_brown">#8d5524</color>
+    <color name="safe_black">#000000</color>
+
 </resources>
