@@ -103,7 +103,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void launchMainActivity() {
-        Intent mainActivity = new Intent(SignInActivity.this, MainActivity.class);
+        Intent mainActivity = new Intent(SignInActivity.this, DeviceList.class);
         startActivity(mainActivity);
     }
 

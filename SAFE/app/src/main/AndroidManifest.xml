@@ -17,7 +17,7 @@
 
         <activity android:name=".ActiveDevice">
         </activity>
-        
+
         <activity android:name=".DeviceList">
         </activity>
 
