@@ -5,6 +5,7 @@
     <string name="time_label">timestamp: </string>
     <string name="default_time_stamp">no timestamps</string>
     <string name="NightPicText">Database Picture</string>
+
     <string name="title_activity_firebase_auth">Sign in</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -18,6 +19,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <!-- Strings related to device list -->
     <string name="device_icon">Device Default Icon</string>
     <string name="default_device_text">Default Device Text</string>
     <string name="default_device_hash_text">D3FaUltDeV1c3H4sh</string>
