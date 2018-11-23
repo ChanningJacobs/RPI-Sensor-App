@@ -19,7 +19,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    
+
     <string name="device_icon">Device Default Icon</string>
     <string name="default_device_text">Default Device Text</string>
     <string name="default_device_hash_text">D3FaUltDeV1c3H4sh</string>

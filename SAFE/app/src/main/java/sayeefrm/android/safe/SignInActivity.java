@@ -24,6 +24,7 @@ public class SignInActivity extends AppCompatActivity {
     private EditText mPasswordText;
     private Button mSignInButton;
     private Button mRegisterButton;
+    private Button mForgotPasswordButton;
     private FirebaseAuth mAuth;
     private DatabaseReference mUserDB;
 
@@ -38,6 +39,7 @@ public class SignInActivity extends AppCompatActivity {
         mPasswordText = findViewById(R.id.user_password);
         mSignInButton = findViewById(R.id.sign_in_button);
         mRegisterButton = findViewById(R.id.register_button);
+        mForgotPasswordButton = findViewById(R.id.forgot_password_button);
         mAuth = FirebaseAuth.getInstance();
         mUserDB = FirebaseDatabase.getInstance().getReference().child(USER_DB);
         Log.d("SAFE-APP", "able to get reference to users");
@@ -91,6 +93,13 @@ public class SignInActivity extends AppCompatActivity {
                         }
                     }
                 });
+            }
+        });
+
+        mForgotPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignInActivity.this, ForgotPassword.class));
             }
         });
 
