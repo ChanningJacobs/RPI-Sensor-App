@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,8 +25,10 @@ public class SignInActivity extends AppCompatActivity {
     private EditText mPasswordText;
     private Button mSignInButton;
     private Button mRegisterButton;
+    private Button mForgotPasswordButton;
     private FirebaseAuth mAuth;
     private DatabaseReference mUserDB;
+    private ProgressBar progressBar;
 
     private final String USER_DB = "users";
 
@@ -38,8 +41,10 @@ public class SignInActivity extends AppCompatActivity {
         mPasswordText = findViewById(R.id.user_password);
         mSignInButton = findViewById(R.id.sign_in_button);
         mRegisterButton = findViewById(R.id.register_button);
+        mForgotPasswordButton = findViewById(R.id.forgot_password_button);
         mAuth = FirebaseAuth.getInstance();
         mUserDB = FirebaseDatabase.getInstance().getReference().child(USER_DB);
+        progressBar = findViewById(R.id.progress_bar_sign_in);
         Log.d("SAFE-APP", "able to get reference to users");
     }
 
@@ -50,25 +55,33 @@ public class SignInActivity extends AppCompatActivity {
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String email = mEmailText.getText().toString();
-                final String password = mPasswordText.getText().toString();
-                Log.d("SAFE-APP", "entered the on click for the register button");
-                if(validatePassword(password)) {
-                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            Log.d("SAFE-APP", "entered on complete on registration");
-                            if (task.isSuccessful()) {
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                Log.d("SAFE-APP", "current user: " + user.getEmail());
-                                User newUser = new User(user.getUid(), email, password);
-                                mUserDB.child(user.getUid()).setValue(newUser);
-                                launchMainActivity();
+                try {
+                    final String email = mEmailText.getText().toString();
+                    final String password = mPasswordText.getText().toString();
+                    progressBar.setVisibility(View.VISIBLE);
+                    Log.d("SAFE-APP", "entered the on click for the register button");
+                    if(validatePassword(password)) {
+                        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                Log.d("SAFE-APP", "entered on complete on registration");
+                                progressBar.setVisibility(View.GONE);
+                                if (task.isSuccessful()) {
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    Log.d("SAFE-APP", "current user: " + user.getEmail());
+                                    User newUser = new User(user.getUid(), email, password);
+                                    mUserDB.child(user.getUid()).setValue(newUser);
+                                    launchMainActivity();
+                                }
                             }
-                        }
-                    });
-                } else {
-                    // show something to the user that their email or password arent good
+                        });
+                    } else {
+                        // show something to the user that their email or password arent good
+                    }
+                } catch (Exception e) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(SignInActivity.this,
+                            "Enter an email address and password", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -77,20 +90,35 @@ public class SignInActivity extends AppCompatActivity {
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String email = mEmailText.getText().toString();
-                final String password = mPasswordText.getText().toString();
-                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            // launch an intent to go to the main activity
-                            launchMainActivity();
-                        } else {
-                            Toast.makeText(SignInActivity.this, "Sign in failed",
-                                    Toast.LENGTH_SHORT).show();
+                try {
+                    final String email = mEmailText.getText().toString();
+                    final String password = mPasswordText.getText().toString();
+                    progressBar.setVisibility(View.VISIBLE);
+                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            progressBar.setVisibility(View.GONE);
+                            if(task.isSuccessful()) {
+                                // launch an intent to go to the main activity
+                                launchMainActivity();
+                            } else {
+                                Toast.makeText(SignInActivity.this, "Sign in failed",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+                } catch (Exception ee) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(SignInActivity.this,
+                            "Enter an email address and password", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        mForgotPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignInActivity.this, ForgotPassword.class));
             }
         });
 
