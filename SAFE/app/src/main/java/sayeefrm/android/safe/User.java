@@ -6,7 +6,7 @@ import java.util.Map;
 public class User {
     String id;
     String email;
-    String password;
+    private String password;
     Map<String, Boolean> devices;
 
     public User(String id, String email, String password) {

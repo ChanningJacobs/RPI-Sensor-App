@@ -1,13 +1,23 @@
 package sayeefrm.android.safe;
 
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class DeviceList extends AppCompatActivity {
 
@@ -16,6 +26,10 @@ public class DeviceList extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private DatabaseReference mUserDB;
+    private DatabaseReference mDevice;
+    private String UserID;
+    private Integer device_count;
 
    // Device list
     private ArrayList<String> deviceNames = new ArrayList<>();
@@ -28,42 +42,38 @@ public class DeviceList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_list);
 
-        deviceNames.add("Test Name 1");
-        deviceNames.add("Test Name 2");
-        deviceNames.add("Test Name 3");
-        deviceNames.add("Test Name 4");
-        deviceNames.add("Test Name 5");
-        deviceNames.add("Test Name 6");
-        deviceNames.add("Test Name 7");
-        deviceNames.add("Test Name 8");
-        deviceNames.add("Test Name 9");
-        deviceNames.add("Test Name 10");
-        deviceNames.add("Test Name 11");
+        // Query for devices owned by the user
+        UserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mUserDB = FirebaseDatabase.getInstance().getReference().child("users").child(UserID);
+        mUserDB.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                device_count = (int)dataSnapshot.getChildrenCount();
+                Log.d("SNAPSHOT", dataSnapshot.child("email").getValue().toString());
+//                for(DataSnapshot devices: dataSnapshot.getChildren()){
+//                    Log.d("SNAPSHOT", devices.child("email").toString());
+//                }
+                // Create devices
 
-        deviceHashes.add("H@5H Test 1");
-        deviceHashes.add("H@5H Test 2");
-        deviceHashes.add("H@5H Test 3");
-        deviceHashes.add("H@5H Test 4");
-        deviceHashes.add("H@5H Test 5");
-        deviceHashes.add("H@5H Test 6");
-        deviceHashes.add("H@5H Test 7");
-        deviceHashes.add("H@5H Test 8");
-        deviceHashes.add("H@5H Test 9");
-        deviceHashes.add("H@5H Test 10");
-        deviceHashes.add("H@5H Test 11");
+            }
 
-        deviceImages.add(R.color.safe_red);
-        deviceImages.add(R.color.safe_orange);
-        deviceImages.add(R.color.safe_yellow);
-        deviceImages.add(R.color.safe_green);
-        deviceImages.add(R.color.safe_blue);
-        deviceImages.add(R.color.safe_purple);
-        deviceImages.add(R.color.safe_pink);
-        deviceImages.add(R.color.safe_aqua);
-        deviceImages.add(R.color.safe_tan);
-        deviceImages.add(R.color.safe_brown);
-        deviceImages.add(R.color.safe_black);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+
+        // Generate list of devices
+        Device[] devices = new Device[1];
+        for (int i = 0; i < devices.length; i++) {
+            Log.d("CREATE_DEVICE", "" + i);
+            devices[i] = new Device("Device: " + i, "testhash");
+            deviceNames.add(devices[i].name);
+            deviceHashes.add(devices[i].hash);
+            deviceImages.add(generateImageColor());
+            Log.d("CREATE_DEVICE", devices[i].name);
+            Log.d("CREATE_DEVICE", devices[i].hash);
+        }
 
         // Find recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.device_recycler_view);
@@ -85,7 +95,19 @@ public class DeviceList extends AppCompatActivity {
 
     }
 
-    private void generateImageColors() {
-        return;
+    private Integer generateImageColor() {
+        Integer[] colors = new Integer[11];
+        colors[0] = R.color.safe_red;
+        colors[1] = R.color.safe_orange;
+        colors[2] = R.color.safe_yellow;
+        colors[3] = R.color.safe_green;
+        colors[4] = R.color.safe_blue;
+        colors[5] = R.color.safe_purple;
+        colors[6] = R.color.safe_pink;
+        colors[7] = R.color.safe_aqua;
+        colors[8] = R.color.safe_tan;
+        colors[9] = R.color.safe_brown;
+        colors[10] = R.color.safe_black;
+        return colors[new Random().nextInt(11)];
     }
 }
