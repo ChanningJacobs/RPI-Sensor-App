@@ -23,6 +23,7 @@
     <string name="device_icon">Device Default Icon</string>
     <string name="default_device_text">Default Device Text</string>
     <string name="default_device_hash_text">D3FaUltDeV1c3H4sh</string>
+    <string name="add_device">add new device</string>
 
     <string name="default_email">email</string>
     <string name="default_password">password</string>

@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 
@@ -83,6 +86,25 @@ public class DeviceList extends AppCompatActivity {
         mAdapter = new DeviceViewAdapter(this, deviceNames, deviceImages, deviceHashes);
         mRecyclerView.setAdapter(mAdapter);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_device_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_add_device:
+                // TODO: handle adding a device here
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void generateImageColors() {
