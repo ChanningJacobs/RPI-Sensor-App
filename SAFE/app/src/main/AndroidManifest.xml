@@ -6,6 +6,11 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -14,19 +19,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".ActiveDevice">
-        </activity>
-
+        <activity android:name=".ActiveDevice"></activity>
         <activity android:name=".DeviceList">
-        </activity>
 
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_NDEF_DISCOVERY" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            -->
+        </activity>
         <activity android:name=".SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".NFCScanActivity"></activity>
     </application>
 
 </manifest>

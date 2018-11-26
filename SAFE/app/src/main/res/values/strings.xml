@@ -19,11 +19,17 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    
+    <string name="dialog_scan_for_device">Scanning For Device</string>
+    <string name="scan">scan</string>
+    <string name="cancel">cancel</string>
+    <string name="accept_device">accept</string>
+    <string name="decline_device">decline</string>
+
     <string name="device_icon">Device Default Icon</string>
     <string name="default_device_text">Default Device Text</string>
     <string name="default_device_hash_text">D3FaUltDeV1c3H4sh</string>
-    <string name="add_device">add new device</string>
+    <string name="add_device">Add new device</string>
+    <string name="scanning_for_devices">Scanning for Devices</string>
 
     <string name="default_email">email</string>
     <string name="default_password">password</string>

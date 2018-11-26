@@ -15,5 +15,4 @@ public class User {
         this.password = password;
         this.devices = new HashMap<>();
     }
-
 }

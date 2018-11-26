@@ -63,6 +63,7 @@ public class SignInActivity extends AppCompatActivity {
                                 Log.d("SAFE-APP", "current user: " + user.getEmail());
                                 User newUser = new User(user.getUid(), email, password);
                                 mUserDB.child(user.getUid()).setValue(newUser);
+                                Log.d("SAFE-APP", "able to push the child through");
                                 launchMainActivity();
                             }
                         }

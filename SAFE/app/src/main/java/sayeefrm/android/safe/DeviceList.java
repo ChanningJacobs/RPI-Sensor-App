@@ -1,14 +1,30 @@
 package sayeefrm.android.safe;
 
+import android.app.PendingIntent;
+import android.arch.persistence.room.Database;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.nfc.tech.NfcF;
+import android.os.Parcelable;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -88,6 +104,10 @@ public class DeviceList extends AppCompatActivity {
 
     }
 
+    public void onResume() {
+        super.onResume();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -100,7 +120,8 @@ public class DeviceList extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_add_device:
-                // TODO: handle adding a device here
+                Intent scan_intent = new Intent(this, NFCScanActivity.class);
+                startActivity(scan_intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
