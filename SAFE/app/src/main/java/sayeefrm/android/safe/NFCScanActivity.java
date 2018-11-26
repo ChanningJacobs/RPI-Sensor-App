@@ -32,7 +32,7 @@ public class NFCScanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_nfcscan);
         focus = findViewById(R.id.focus_text);
         focus.setTextColor(Color.LTGRAY);
         acceptButton = findViewById(R.id.accept);
@@ -52,8 +52,6 @@ public class NFCScanActivity extends AppCompatActivity {
             throw new RuntimeException("fail", e);
         }
         intentFilters = new IntentFilter[] {ndef};
-
-        setContentView(R.layout.activity_nfcscan);
     }
 
     public void onResume() {
@@ -83,7 +81,7 @@ public class NFCScanActivity extends AppCompatActivity {
                                 switch(v.getId()) {
                                     case R.id.accept:
                                         // TODO: handle adding this device to the user's list of devices
-
+                                        //User.devices.put()
                                         nfcAdpt.disableForegroundDispatch(NFCScanActivity.this);
                                         // go back to the device list with the newly added device
                                         Intent device_list_intent = new Intent(NFCScanActivity.this, DeviceList.class);
