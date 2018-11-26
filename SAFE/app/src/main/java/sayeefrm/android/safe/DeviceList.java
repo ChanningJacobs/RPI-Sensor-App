@@ -1,7 +1,8 @@
 package sayeefrm.android.safe;
 
-import android.content.res.Resources;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -9,12 +10,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -109,5 +115,29 @@ public class DeviceList extends AppCompatActivity {
         colors[9] = R.color.safe_brown;
         colors[10] = R.color.safe_black;
         return colors[new Random().nextInt(11)];
+    }
+
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_device_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_add_device:
+                Intent scan_intent = new Intent(this, NFCScanActivity.class);
+                startActivity(scan_intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

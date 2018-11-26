@@ -97,9 +97,16 @@ public class SignInActivity extends AppCompatActivity {
                     mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+
                             progressBar.setVisibility(View.GONE);
-                            if(task.isSuccessful()) {
-                                // launch an intent to go to the main activity
+
+                            Log.d("SAFE-APP", "entered on complete on registration");
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                Log.d("SAFE-APP", "current user: " + user.getEmail());
+                                User newUser = new User(user.getUid(), email, password);
+                                mUserDB.child(user.getUid()).setValue(newUser);
+                                Log.d("SAFE-APP", "able to push the child through");
                                 launchMainActivity();
                             } else {
                                 Toast.makeText(SignInActivity.this, "Sign in failed",
