@@ -36,6 +36,7 @@ public class DeviceList extends AppCompatActivity {
     private DatabaseReference mDevice;
     private String UserID;
     private Integer device_count;
+    private Device[] device_arr;
 
    // Device list
     private ArrayList<String> deviceNames = new ArrayList<>();
@@ -48,19 +49,44 @@ public class DeviceList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_list);
 
-        // Query for devices owned by the user
+        /* Query for devices owned by the user
+            !!!!!
+        This is not a full implementation. The database is only accessed on updates to data.
+        Adding one device will work. Fix this to allow for more devices without having to add
+        a new device.
+            !!!!!
+         */
         UserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mUserDB = FirebaseDatabase.getInstance().getReference().child("users").child(UserID);
+        mUserDB = FirebaseDatabase.getInstance().getReference().child("users").child(UserID).child("owned");
+
         mUserDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 device_count = (int)dataSnapshot.getChildrenCount();
-                Log.d("SNAPSHOT", dataSnapshot.child("email").getValue().toString());
-//                for(DataSnapshot devices: dataSnapshot.getChildren()){
-//                    Log.d("SNAPSHOT", devices.child("email").toString());
-//                }
-                // Create devices
-
+                Log.d("COUNT", device_count.toString());
+                device_arr = new Device[device_count];
+                //Log.d("SNAPSHOT", dataSnapshot.child("email").getValue().toString());
+                int i = 0;
+                for(DataSnapshot device : dataSnapshot.getChildren()){
+                    device_arr[i] = new Device(device.child("enabled").getValue().toString(), device.child("hash").getValue().toString(), device.child("title").getValue().toString());
+                    Log.d("CHILD_DEV", device.child("enabled").getValue().toString());
+                    Log.d("CHILD_DEV", device.child("hash").getValue().toString());
+                    Log.d("CHILD_DEV", device.child("title").getValue().toString());
+                    i++;
+                }
+                // Generate list of devices (move this later?...see above comment warning)
+                if (device_arr != null) {
+                    for (int j = 0; j < device_arr.length; j++) {
+                        Log.d("CREATE_DEVICE", "" + j);
+                        deviceNames.add(device_arr[j].name);
+                        deviceHashes.add(device_arr[j].hash);
+                        deviceImages.add(generateImageColor());
+                        Log.d("CREATE_DEVICE", device_arr[j].enabled);
+                        Log.d("CREATE_DEVICE", device_arr[j].hash);
+                        Log.d("CREATE_DEVICE", device_arr[j].name);
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -69,17 +95,6 @@ public class DeviceList extends AppCompatActivity {
             }
         });
 
-        // Generate list of devices
-        Device[] devices = new Device[1];
-        for (int i = 0; i < devices.length; i++) {
-            Log.d("CREATE_DEVICE", "" + i);
-            devices[i] = new Device("Device: " + i, "testhash");
-            deviceNames.add(devices[i].name);
-            deviceHashes.add(devices[i].hash);
-            deviceImages.add(generateImageColor());
-            Log.d("CREATE_DEVICE", devices[i].name);
-            Log.d("CREATE_DEVICE", devices[i].hash);
-        }
 
         // Find recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.device_recycler_view);

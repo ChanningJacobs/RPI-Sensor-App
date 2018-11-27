@@ -7,13 +7,15 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class Device {
-     String name;
+     String enabled;
      String hash;
+     String name;
 //    private ArrayList<String> owner_hashes;
 
-    Device(String name, String hash){
-        this.name = name;
+    Device(String enabled, String hash, String name){
+        this.enabled = enabled;
         this.hash = hash;
+        this.name = name;
     }
 
 //    public void addOwner(DatabaseReference ref, FirebaseUser user){

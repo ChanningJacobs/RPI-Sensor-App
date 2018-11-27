@@ -1,5 +1,6 @@
 package sayeefrm.android.safe;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -30,6 +31,11 @@ public class ActiveDevice extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_device);
+
+        // Intent from DeviceViewAdapter (clicking a device in the list)
+        Intent intent = getIntent();
+        String device_id = intent.getStringExtra(DeviceViewAdapter.EXTRA_MESSAGE);
+
         mDistanceLabel = (TextView) findViewById(R.id.distance_label);
         mDistanceMeasurement = (TextView) findViewById(R.id.distance_measurement);
         mTimeLabel = (TextView) findViewById(R.id.time_label);
@@ -38,7 +44,7 @@ public class ActiveDevice extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        DatabaseReference dbRef = mDatabase.child("measurements");
+        DatabaseReference dbRef = mDatabase.child("devices").child(device_id).child("measurements");
 
         dbRef.addChildEventListener(new ChildEventListener() {
             @Override

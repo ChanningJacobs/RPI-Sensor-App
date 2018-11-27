@@ -21,8 +21,11 @@ public class DeviceViewAdapter extends RecyclerView.Adapter<DeviceViewAdapter.Vi
 
     private ArrayList<String> mDeviceNames = new ArrayList<>();
     private ArrayList<Integer> mDeviceImages = new ArrayList<>();
-    private ArrayList<String> mDeviceHashes = new ArrayList<>();;
+    private ArrayList<String> mDeviceHashes = new ArrayList<>();
     private Context mContext;
+
+    // Intent EXTRA_MESSAGE for ActiveDevice Activity
+    public static final String EXTRA_MESSAGE = "sayeefrm.android.safe.MESSAGE";
 
     public DeviceViewAdapter(Context context, ArrayList<String> deviceNames, ArrayList<Integer> deviceImages, ArrayList<String> deviceHashes){
         mDeviceNames = deviceNames;
@@ -51,6 +54,8 @@ public class DeviceViewAdapter extends RecyclerView.Adapter<DeviceViewAdapter.Vi
                 // Take user to activity for this specific device
                 Toast.makeText(mContext, mDeviceNames.get(position), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, ActiveDevice.class);
+                String message = mDeviceHashes.get(position);
+                intent.putExtra(EXTRA_MESSAGE, message);
                 mContext.startActivity(intent);
             }
         });
